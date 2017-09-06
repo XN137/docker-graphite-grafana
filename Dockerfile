@@ -21,6 +21,7 @@ RUN apt-get update && apt-get install -y \
     python-support \
     python-twisted \
     supervisor \
+    unzip \
     wget
 
 RUN pip install \
@@ -28,6 +29,15 @@ RUN pip install \
     whisper
 RUN pip install --install-option="--prefix=/var/lib/graphite" --install-option="--install-lib=/var/lib/graphite/lib" carbon
 RUN pip install --install-option="--prefix=/var/lib/graphite" --install-option="--install-lib=/var/lib/graphite/webapp" graphite-web
+
+# libfaketime (allows falsifying system date & time)
+# THIS IS JUST A PROOF-OF-CONCEPT. Doesn't support externally specifying the date/time yet.
+RUN wget --no-check-certificate -O master.zip https://github.com/wolfcw/libfaketime/archive/master.zip ;\
+    unzip master.zip ;\
+    cd libfaketime-master && make install && cd ..
+RUN export LD_PRELOAD=/usr/local/lib/faketime/libfaketime.so.1 ;\
+    export FAKETIME_NO_CACHE=1 ;\
+    export FAKETIME="2017-08-24 00:00:00"
 
 # Grafana
 RUN wget https://s3-us-west-2.amazonaws.com/grafana-releases/release/grafana_4.4.1_amd64.deb ;\
