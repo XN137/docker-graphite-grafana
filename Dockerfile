@@ -35,9 +35,9 @@ RUN pip install --install-option="--prefix=/var/lib/graphite" --install-option="
 RUN wget --no-check-certificate -O master.zip https://github.com/wolfcw/libfaketime/archive/master.zip ;\
     unzip master.zip ;\
     cd libfaketime-master && make install && cd ..
-RUN export LD_PRELOAD=/usr/local/lib/faketime/libfaketime.so.1 ;\
-    export FAKETIME_NO_CACHE=1 ;\
-    export FAKETIME="2017-08-24 00:00:00"
+ENV LD_PRELOAD /usr/local/lib/faketime/libfaketime.so.1
+ENV FAKETIME_NO_CACHE 1
+ENV FAKETIME "2017-08-24 00:00:00"
 
 # Grafana
 RUN wget https://s3-us-west-2.amazonaws.com/grafana-releases/release/grafana_4.4.1_amd64.deb ;\
