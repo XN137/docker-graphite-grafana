@@ -32,12 +32,12 @@ RUN pip install --install-option="--prefix=/var/lib/graphite" --install-option="
 
 # libfaketime (allows falsifying system date & time)
 # THIS IS JUST A PROOF-OF-CONCEPT. Doesn't support externally specifying the date/time yet.
-RUN wget --no-check-certificate -O master.zip https://github.com/wolfcw/libfaketime/archive/master.zip ;\
-    unzip master.zip ;\
+RUN wget --no-check-certificate -O master.zip https://github.com/wolfcw/libfaketime/archive/master.zip
+    unzip master.zip
     cd libfaketime-master && make install && cd ..
-ENV LD_PRELOAD /usr/local/lib/faketime/libfaketime.so.1
 ENV FAKETIME_NO_CACHE 1
-ENV FAKETIME "2017-08-24 00:00:00"
+ENV FAKETIME 2017-08-24 00:00:00
+ENV LD_PRELOAD /usr/local/lib/faketime/libfaketime.so.1
 
 # Grafana
 RUN wget https://s3-us-west-2.amazonaws.com/grafana-releases/release/grafana_4.4.1_amd64.deb ;\
